@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Machine Learning Model Interface</title>
+</head>
+<body>
+    <h1>Machine Learning Model Interface</h1>
+    <form id="mlForm">
+        <label for="age">Age:</label>
+        <input type="text" id="age" name="age" required>
+        <br>
+        <label for="avg_glucose_level">Average Glucose Level:</label>
+        <input type="text" id="avg_glucose_level" name="avg_glucose_level" required>
+        <br>
+        <button type="button" onclick="makePrediction()">Make Prediction</button>
+    </form>
+    <div id="predictionResult"></div>
+
+    <script>
+        async function makePrediction() {
+            const age = document.getElementById('age').value;
+            const avg_glucose_level = document.getElementById('avg_glucose_level').value;
+
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ age: parseFloat(age), avg_glucose_level: parseFloat(avg_glucose_level) }),
+            });
+
+            const result = await response.json();
+            document.getElementById('predictionResult').innerText = `Prediction: ${result.response}`;
+        }
+    </script>
+</body>
+</html>
